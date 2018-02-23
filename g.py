@@ -39,16 +39,16 @@ class GUI_Label_Countable(GUI_Object):  ##TODO
         self.font_size = font_size
         self.count_type = count_type
         self.count_factor = count_factor
-        edit = None
-        self.edit = None
+        self.edit = ''
         if self.count_type == 'limit_width':
-            text, height = self.text_adapt_lw(self.text, self.position[1][0], self.font_size)
-            self.position = (self.position[0], (self.position[1][0], height), self.position[2])
+            text, height = self.text_adapt_lw(self.text, self.position[1][0]-self.position[2][0], self.font_size)
+            self.position = (self.position[0], (self.position[1][0], height+self.position[2][1]), self.position[2])
         if self.count_type == 'limit_height':  ## not now
             text, width = self.text_adapt_lh(self.text, self.position[1][1], self.font_size)
             self.position[1][0] = width
         if self.count_type == 'limit_size':
-            text, font_size = self.text_adapt_ls(self.text, self.position[1], self.count_factor, self.font_size)
+            self.position = (self.position[0], (self.position[1][0], self.position[1][1]), self.position[2])
+            text, font_size = self.text_adapt_ls(self.text, [self.position[1][0], self.position[1][1]], self.count_factor, self.font_size)
             self.font_size = font_size
             del self.edit
 
@@ -61,52 +61,52 @@ class GUI_Label_Countable(GUI_Object):  ##TODO
         t = []
         font = pygame.font.Font(None, font_size)
         j = 0
+        a = len(text)
         while j < len(text):
             for i in range(len(text)):
                 t_e = font.render(text[j:j+i+1], 1, self.tx_color)
-                if t_e.get_width() > width:
-                    t += [text[0:i]]
-                    j = i
+                if t_e.get_width() > width or j+i > len(text):
+                    t.append(text[j:j+i])
+                    j = j+i
                     break
-                else:
-                    j += 1
-                    break
-        
+                
         height = len(t) * t_e.get_height()
         return t, height
     
-    def text_adapt_lh(self, text, height, font_size):  ## not now
+    def text_adapt_lh(self, text, height, font_size):  ## not now+
         pass
     
     def text_adapt_ls(self, text, size, size_factor, font_size):
         if size_factor == 'font_adapt':
             font = pygame.font.Font(None, font_size)
             t = font.render(text, 1, self.tx_color)
-            if t.get_width() > size[1] and self.edit != 'largen':
+            if t.get_width() > size[0] and self.edit != 'largen':
                 self.edit = 'smallen'
                 font_size -= 3
                 text, font_size = self.text_adapt_ls(text, size, size_factor, font_size)
-            if t.get_width() < size[1] and self.edit != 'smallen':
+            if t.get_width() < size[0] and self.edit != 'smallen':
                 self.edit = 'largen'
                 font_size += 3
                 text, font_size = self.text_adapt_ls(text, size, size_factor, font_size)
         else:
             x_parameter = (size[0] * size[1]) // len(text)
             font = pygame.font.Font(None, font_size)
-            t_e = font.render(text, 1, self.tx_color)
-            
-            if t_e.get_width() * t_e.get_height() < x_parameter and self.edit != 'smallen':
+            t_e = font.render('0', 1, self.tx_color)
+            b, a = t_e.get_height(), t_e.get_width()
+            if b * a < x_parameter and self.edit != 'smallen':
                 self.edit = 'largen'
-                text, font_size = text_adapt_ls(text, size, size_factor, font_size+3)
-                self.edit = 'ohgod' if self.edit is not None else self.edit
-            if t_e.get_width() * t_e.get_height() > x_parameter and self.edit != 'largen':
+                text, font_size = self.text_adapt_ls(text, size, size_factor, font_size+1)
+                self.edit = 'ohgod' if self.edit != '' else self.edit
+            if b * a > x_parameter and self.edit != 'largen':
                 self.edit = 'smallen'
-                text, font_size = text_adapt_ls(text, size, size_factor, font_size-3)
-                self.edit = 'ohgod' if self.edit is not None else self.edit
-            if self.edit != 'smallen' and self.edit != 'largen':
-                a, b = t_e.get_height(), t_e.get_width()
-                text = [[text[j] for j in range(a*b, a*b + a)] for i in range(b)]
-                self.edit = None
+                text, font_size = self.text_adapt_ls(text, size, size_factor, font_size-1)
+                self.edit = 'ohgod' if self.edit != '' else self.edit
+            if self.edit not in ['smallen', 'largen' , '']:
+                bad_code = text
+                text = [''.join([text[j] for j in range((size[0] // a) * i, (size[0] // a) * (i+1))]) for i in range(size[1] // b)]
+                if ''.join(text) != bad_code:
+                    text.append(bad_code[(size[0] // a) * (size[1] // b):])
+                self.edit = ''
                 
         return text, font_size
         
@@ -117,9 +117,10 @@ class GUI_Label_Countable(GUI_Object):  ##TODO
         if self.bg is not None:
             pygame.draw.rect(screen, pygame.Color(self.bg), self.rect, 0)
         font = pygame.font.Font(None, self.font_size)
+        self.text = self.text if isinstance(self.text, list) else [self.text]
         for num, line in enumerate(self.text):
             l = font.render(line, 1, self.tx_color)
-            screen.blit(l, (self.position[0][0] + self.position[2][0], self.position[0][1] + self.position[2][1] + l.get_height()*num+5))
+            screen.blit(l, (self.position[0][0] + self.position[2][0], self.position[0][1] + self.position[2][1] + l.get_height()*num))
 
 
 class GUI_Label_Uncountable(GUI_Object):
@@ -170,7 +171,7 @@ game = True
 clock = pygame.time.Clock()
 gui = GUI()
 
-gui.add_element('GUI_Label_Countable', '1', [(10, 10), (100, None), (10, 10)], 'abcdefghigklmnop', 'white', (255, 0, 0), 30, 'limit_width', None) ##limit_height, limit_size
+gui.add_element('GUI_Label_Countable', '1', [(10, 10), (400, 400), (5, 5)], 'abcdefghijklmnopqrstuvwxyz0000001121324546454650G', 'white', (255, 0, 0), 30, 'limit_size', '') ##limit_width, limit_height, limit_size
 fps = 60
 
 while game:
