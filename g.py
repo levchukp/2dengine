@@ -30,7 +30,7 @@ class GUI_Object:
         pass
 
 
-class GUI_Label_Countable(GUI_Object):  ##TODO
+class GUI_Label_Countable(GUI_Object):
     def __init__(self, name, position, text, bg, tx_color, font_size, count_type, count_factor):
         super().__init__(name, position)
         self.text = text
@@ -49,7 +49,8 @@ class GUI_Label_Countable(GUI_Object):  ##TODO
         if self.count_type == 'limit_size':
             self.position = (self.position[0], (self.position[1][0], self.position[1][1]), self.position[2])
             text, font_size = self.text_adapt_ls(self.text, [self.position[1][0], self.position[1][1]], self.count_factor, self.font_size)
-            self.font_size = font_size
+            text, p = self.text_adapt_lw(''.join(text), self.position[1][0], (font_size * len(text)) // (len(text) + 1))
+            self.font_size = (font_size * len(text)) // (len(text) + 1)
             del self.edit
 
         self.text = text
@@ -91,7 +92,7 @@ class GUI_Label_Countable(GUI_Object):  ##TODO
         else:
             x_parameter = (size[0] * size[1]) // len(text)
             font = pygame.font.Font(None, font_size)
-            t_e = font.render('0', 1, self.tx_color)
+            t_e = font.render('a', 1, self.tx_color)
             b, a = t_e.get_height(), t_e.get_width()
             if b * a < x_parameter and self.edit != 'smallen':
                 self.edit = 'largen'
@@ -121,7 +122,6 @@ class GUI_Label_Countable(GUI_Object):  ##TODO
         for num, line in enumerate(self.text):
             l = font.render(line, 1, self.tx_color)
             screen.blit(l, (self.position[0][0] + self.position[2][0], self.position[0][1] + self.position[2][1] + l.get_height()*num))
-
 
 class GUI_Label_Uncountable(GUI_Object):
     def __init__(self, name, position, text, bg, tx_color, font_size):
