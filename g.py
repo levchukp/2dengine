@@ -9,7 +9,7 @@ screen.fill(pygame.Color('black'))
 class GUI:
     def __init__(self):
         self.elements = {}
-        self.element_types = {'GUI_Label_Uncountable': GUI_Label_Uncountable, 'GUI_Label_Countable': GUI_Label_Countable, 'GUI_Button': GUI_Button}
+        self.element_types = {'GUI_Label_Uncountable': GUI_Label_Uncountable, 'GUI_Label_Countable': GUI_Label_Countable, 'GUI_Button': GUI_Button, 'GUI_Changeable_Label': GUI_Changeable_Label, 'GUI_Text_Field': GUI_Text_Field}
         self.blocked = False
         self.active_element = None
 
@@ -42,6 +42,7 @@ class GUI_Label_Countable(GUI_Object):
         self.count_type = count_type
         self.count_factor = count_factor
         self.edit = ''
+
         if self.count_type == 'limit_width':
             text, height = self.text_adapt_lw(self.text, self.position[1][0]-self.position[2][0], self.font_size)
             self.position = (self.position[0], (self.position[1][0], height+self.position[2][1]), self.position[2])
@@ -56,9 +57,9 @@ class GUI_Label_Countable(GUI_Object):
             del self.edit
 
         self.text = text
-
         if self.bg is not None:
             self.rect = pygame.Rect(self.position[0], self.position[1])
+
 
     def text_adapt_lw(self, text, width, font_size):
         t = []
@@ -121,8 +122,25 @@ class GUI_Label_Countable(GUI_Object):
     def render(self):
         global screen
 
+        if not isinstance(self.text, list):
+            if self.count_type == 'limit_width':
+                text, height = self.text_adapt_lw(self.text, self.position[1][0]-self.position[2][0], self.font_size)
+                self.position = (self.position[0], (self.position[1][0], height+self.position[2][1]), self.position[2])
+            if self.count_type == 'limit_height':  ## not now
+                text, width = self.text_adapt_lh(self.text, self.position[1][1], self.font_size)
+                self.position[1][0] = width
+            if self.count_type == 'limit_size':
+                self.position = (self.position[0], (self.position[1][0], self.position[1][1]), self.position[2])
+                text, font_size = self.text_adapt_ls(self.text, [self.position[1][0], self.position[1][1]], self.count_factor, self.font_size)
+                text, p = self.text_adapt_lw(''.join(text), self.position[1][0]-self.position[2][0], (font_size * len(text)) // (len(text) + 1))
+                self.font_size = (font_size * len(text)) // (len(text) + 1)
+                del self.edit
+
+            self.text = text
         if self.bg is not None:
             pygame.draw.rect(screen, pygame.Color(self.bg), self.rect, 0)
+            self.rect = pygame.Rect(self.position[0], self.position[1])
+            
         font = pygame.font.Font(None, self.font_size)
         self.text = self.text if isinstance(self.text, list) else [self.text]
         for num, line in enumerate(self.text):
@@ -188,22 +206,74 @@ class GUI_Button(GUI_Object):
             pygame.draw.rect(screen, pygame.Color(color), self.rect, 0)
             
             
-
-class GUI_Slider(GUI_Object):  ##TODO
+class GUI_Slider(GUI_Object):  ##not_now
     pass
 
-class GUI_Changeable_Label(GUI_Object):  ##TODO
-    pass
 
-class GUI_Text_Field(GUI_Object):  ##TODO
-    pass
+class GUI_Changeable_Label(GUI_Object):  ##bad_code: args
+    def __init__(self, name, position, dependency, bg, value_color, text):
+        super().__init__(name, position)
+        self.dependency = dependency
+        self.bg, self.value_color, self.text = bg, value_color, text
+        if bg is not None:
+            self.rect = pygame.Rect(position[0], position[1])
+
+    def make_rect(self, par, value):
+        if value[2] == 'tall':
+            return pygame.Rect((self.position[0][0], self.position[0][1]+par), (self.position[1][0], self.position[1][1]-par))
+        elif value[2] == 'wide':
+            return pygame.Rect((self.position[0][0]+par, self.position[0][1]), (self.position[1][0]-par, self.position[1][1]))
+
+    def render(self):
+        global screen
+        value = self.dependency(1)
+        
+        if self.bg is not None:
+            pygame.draw.rect(screen, pygame.Color(self.bg), self.rect, 0)
+            if self.value_color[1] is not None:
+                r = self.make_rect(int(self.position[1][1]*(1-value[1])), self.text)
+                pygame.draw.rect(screen, pygame.Color(self.value_color), r, 0)
+
+        if self.text[1] == 'False':
+            font = pygame.font.Font(None, self.text['size'])
+            text = font.render(value[0], 1, self.text['color'])
+            screen.blit(text, (self.position[0][0] + self.position[2][0], self.position[0][1] + self.position[2][1]))
+
+
+class GUI_Text_Field(GUI_Object):
+    def __init__(self, name, position, text, bg, tx_color, font_size, count_type, count_factor, clicked):
+        super().__init__(name, position)
+        self.field = GUI_Label_Countable('0', [(600, 10), (100, None), (5, 5)], text, bg, tx_color, font_size, 'limit_width', None)
+        self.position = self.field.position
+        self.bg = bg
+        self.clicked = clicked
+        self.state = 'normal'
+
+    def func(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            global gui
+            gui.blocked = self.position
+
+    def texting(self, event):
+        self.field.text = ''.join(self.field.text) + event.unicode
+
+    def render(self):
+        if self.state != 'normal':
+            self.field.bg = self.clicked
+        elif self.state == 'normal':
+            self.field.bg = self.bg
+        self.field.render()
+        self.position = self.field.position
+
+
 
 game = True
 clock = pygame.time.Clock()
 gui = GUI()
 
 gui.add_element('GUI_Button', '1', ((10, 10), (50, 50)), print, 'white', 'red', 'grey', ['rect'])
-gui.add_element('GUI_Button', '2', ((100, 100), (50, 50)), exec, 'white', 'red', 'grey', ['rect'])
+gui.add_element('GUI_Button', '2', ((100, 100), (50, 50)), print, 'white', 'red', 'grey', ['rect'])
+gui.add_element('GUI_Text_Field', '0', [(10, 10), (100, None), (5, 5)], 'lambda', 'white', (255, 0, 0), 40, 'limit_width', None, 'grey')                 
 fps = 60
 
 while game:
@@ -215,7 +285,7 @@ while game:
                 if gui.active_element is not None and not (gui.active_element[0][0] <= event.pos[0] <= gui.active_element[0][0]+gui.active_element[1][0] and gui.active_element[0][1] <= event.pos[1] <= gui.active_element[0][1]+gui.active_element[1][1]):
                     if hasattr(gui.elements[gui.active_element], 'state'):
                         gui.elements[gui.active_element].state = 'normal'
-                    gui.active_element = None
+                    gui.active_element = None if not gui.blocked else gui.active_element
                 if i[0][0] <= event.pos[0] <= i[0][0]+i[1][0] and i[0][1] <= event.pos[1] <= i[0][1]+i[1][1]:
                     gui.active_element = i
                     if hasattr(gui.elements[i], 'state'):
@@ -227,11 +297,20 @@ while game:
                     if hasattr(gui.elements[gui.active_element], 'state'):
                         gui.elements[gui.active_element].state = 'normal'
                     gui.active_element = None
+                    gui.blocked = False
                 if i[0][0] <= event.pos[0] <= i[0][0]+i[1][0] and i[0][1] <= event.pos[1] <= i[0][1]+i[1][1]:
                     if hasattr(gui.elements[i], 'state'):
+                        gui.blocked = True
+                        gui.active_element = i
                         gui.elements[i].state = 'clicked'
-                        gui.elements[i].func()
+                        gui.elements[i].func(event)
+
+        if event.type == pygame.KEYDOWN:
+            if gui.blocked:
+                if hasattr(gui.elements[gui.active_element],'texting'):
+                     gui.elements[gui.active_element].texting(event)
             
+    print(gui.blocked)
     screen.fill(pygame.Color('black'))
     gui.render()
     pygame.display.flip()
