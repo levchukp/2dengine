@@ -1,10 +1,5 @@
 import pygame
 
-pygame.init()
-size = width, height = 800, 800
-screen = pygame.display.set_mode(size)
-screen.fill(pygame.Color('black'))
-
 
 class GUI:
     def __init__(self):
@@ -18,9 +13,9 @@ class GUI:
         self.elements[element.position] = element
         del element
 
-    def render(self):
+    def render(self, screen):
         for element in self.elements.values():
-            element.render()
+            element.render(screen)
 
 
 class GUI_Object:
@@ -32,7 +27,7 @@ class GUI_Object:
         pass
 
 
-class GUI_Label_Countable(GUI_Object):
+class GUI_Label_Countable(GUI_Object): ## []
     def __init__(self, name, position, text, bg, tx_color, font_size, count_type, count_factor):
         super().__init__(name, position)
         self.text = text
@@ -54,7 +49,7 @@ class GUI_Label_Countable(GUI_Object):
             text, font_size = self.text_adapt_ls(self.text, [self.position[1][0], self.position[1][1]], self.count_factor, self.font_size)
             text, p = self.text_adapt_lw(''.join(text), self.position[1][0]-self.position[2][0], (font_size * len(text)) // (len(text) + 1))
             self.font_size = (font_size * len(text)) // (len(text) + 1)
-            del self.edit
+            #del self.edit
 
         self.text = text
         if self.bg is not None:
@@ -119,9 +114,7 @@ class GUI_Label_Countable(GUI_Object):
         return text, font_size
         
 
-    def render(self):
-        global screen
-
+    def render(self, screen):
         if not isinstance(self.text, list):
             if self.count_type == 'limit_width':
                 text, height = self.text_adapt_lw(self.text, self.position[1][0]-self.position[2][0], self.font_size)
@@ -189,12 +182,12 @@ class GUI_Button(GUI_Object):
         if button_pars[0] == 'rect':
             self.rect = pygame.Rect(position[0], position[1])  
         self.state = 'normal'
+        self.text = GUI_Label_Countable(self.button_pars[1], [self.position[0], self.position[1], (5, 5)], self.button_pars[1], None, self.button_pars[2], 40, 'limit_size', 'font_adapt')
 
     def click(self, event):
         self.func(1)
     
-    def render(self):
-        global screen
+    def render(self, screen):
         if self.state == 'normal':
             color = self.normal
         elif self.state == 'selected':
@@ -204,7 +197,8 @@ class GUI_Button(GUI_Object):
 
         if self.button_pars[0] == 'rect':
             pygame.draw.rect(screen, pygame.Color(color), self.rect, 0)
-            
+        if len(self.button_pars) > 1:
+            self.text.render(screen)
             
 class GUI_Slider(GUI_Object):  ##not_now
     pass
@@ -243,77 +237,30 @@ class GUI_Changeable_Label(GUI_Object):  ##bad_code: args
 class GUI_Text_Field(GUI_Object):
     def __init__(self, name, position, text, bg, tx_color, font_size, count_type, count_factor, clicked):
         super().__init__(name, position)
-        self.field = GUI_Label_Countable('0', [(600, 10), (100, None), (5, 5)], text, bg, tx_color, font_size, 'limit_width', None)
-        self.position = self.field.position
+        self.field = GUI_Label_Countable('0', [position[0], (position[1][0], None), (5, 5)], text, bg, tx_color, font_size, 'limit_width', None)
+        #self.position = self.field.position
         self.bg = bg
         self.clicked = clicked
         self.state = 'normal'
 
-    def func(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            global gui
-            gui.blocked = self.position
+    def func(self, thing):
+        if thing.type == pygame.MOUSEBUTTONDOWN:
+            return self.position
 
     def texting(self, event):
-        self.field.text = ''.join(self.field.text) + event.unicode
+        if event.key != pygame.K_BACKSPACE:        
+            self.field.text = ''.join(self.field.text) + event.unicode
+        else:
+            self.field.text = ''.join(self.field.text)[:-1]
+        
 
-    def render(self):
+    def render(self, screen):
         if self.state != 'normal':
             self.field.bg = self.clicked
         elif self.state == 'normal':
             self.field.bg = self.bg
-        self.field.render()
-        self.position = self.field.position
+        self.field.render(screen)
+        #self.position = self.field.position
 
-
-
-game = True
-clock = pygame.time.Clock()
-gui = GUI()
-
-gui.add_element('GUI_Button', '1', ((10, 10), (50, 50)), print, 'white', 'red', 'grey', ['rect'])
-gui.add_element('GUI_Button', '2', ((100, 100), (50, 50)), print, 'white', 'red', 'grey', ['rect'])
-gui.add_element('GUI_Text_Field', '0', [(10, 10), (100, None), (5, 5)], 'lambda', 'white', (255, 0, 0), 40, 'limit_width', None, 'grey')                 
-fps = 60
-
-while game:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            game = False
-        if event.type == pygame.MOUSEMOTION:
-            for i in gui.elements.keys():
-                if gui.active_element is not None and not (gui.active_element[0][0] <= event.pos[0] <= gui.active_element[0][0]+gui.active_element[1][0] and gui.active_element[0][1] <= event.pos[1] <= gui.active_element[0][1]+gui.active_element[1][1]):
-                    if hasattr(gui.elements[gui.active_element], 'state'):
-                        gui.elements[gui.active_element].state = 'normal'
-                    gui.active_element = None if not gui.blocked else gui.active_element
-                if i[0][0] <= event.pos[0] <= i[0][0]+i[1][0] and i[0][1] <= event.pos[1] <= i[0][1]+i[1][1]:
-                    gui.active_element = i
-                    if hasattr(gui.elements[i], 'state'):
-                        gui.elements[i].state = 'selected'
-            
-        if event.type in [pygame.MOUSEBUTTONDOWN, pygame.MOUSEBUTTONUP]:
-            for i in gui.elements.keys():
-                if gui.active_element is not None and not (gui.active_element[0][0] <= event.pos[0] <= gui.active_element[0][0]+gui.active_element[1][0] and gui.active_element[0][1] <= event.pos[1] <= gui.active_element[0][1]+gui.active_element[1][1]):
-                    if hasattr(gui.elements[gui.active_element], 'state'):
-                        gui.elements[gui.active_element].state = 'normal'
-                    gui.active_element = None
-                    gui.blocked = False
-                if i[0][0] <= event.pos[0] <= i[0][0]+i[1][0] and i[0][1] <= event.pos[1] <= i[0][1]+i[1][1]:
-                    if hasattr(gui.elements[i], 'state'):
-                        gui.blocked = True
-                        gui.active_element = i
-                        gui.elements[i].state = 'clicked'
-                        gui.elements[i].func(event)
-
-        if event.type == pygame.KEYDOWN:
-            if gui.blocked:
-                if hasattr(gui.elements[gui.active_element],'texting'):
-                     gui.elements[gui.active_element].texting(event)
-            
-    print(gui.blocked)
-    screen.fill(pygame.Color('black'))
-    gui.render()
-    pygame.display.flip()
-    clock.tick(fps)
-
-pygame.quit()
+if __name__ == '__main__':
+    print('Start GUI')

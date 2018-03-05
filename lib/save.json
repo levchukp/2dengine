@@ -1,26 +1,27 @@
-{
-    "char": {
-        "name": "",
-        "race": "",
-        "abilities": {
-            "str": 0,
-            "int": 0,
-            "end": 0,
-            "agl": 0,
-        },
-        "inventory": {
-        },
-        "quests": {
-        },
-        "place": [
-        ]
-    },
+﻿{
+  "char": {
+    "name": "",
+    "level": 1,
+    "race": "",
+    "abilities": {
+      "str": 10,
+      "int": 10,
+      "end": 10,
+      "agl": 10
+      },
+    "inventory": {
+      },
+    "quests": {
+      },
+    "place": [
+      ]
+  },
 
-    "world": {
-        "time": 0,
-        "replacements": {
-        },
-        "talk_replacements": {
-        }
+  "world": {
+    "time": 0,
+    "replacements": {
+      },
+    "talk_replacements": {
+      }
     }
 }
