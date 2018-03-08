@@ -1,0 +1,43 @@
+{
+  "char": {
+    "tex": {},
+    "race": "",
+    "inventory": {},
+    "name": "werwer",
+    "level": 1,
+    "abilities": {
+      "sp": 100,
+      "hp": 100,
+      "hp_curr": 100,
+      "damage": 1,
+      "sp_curr": 100,
+      "int": 10,
+      "prot": 1,
+      "end": 10,
+      "mp_curr": 100,
+      "str": 10,
+      "agl": 10,
+      "mp": 100
+    },
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "quests": {}
+  },
+  "world": {
+    "replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "talk_replacements": {}
+  }
+}

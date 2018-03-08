@@ -1,0 +1,43 @@
+{
+  "char": {
+    "abilities": {
+      "sp": 100,
+      "damage": 1,
+      "prot": 1,
+      "hp": 100,
+      "mp_curr": 100,
+      "hp_curr": 100,
+      "int": 10,
+      "end": 10,
+      "agl": 10,
+      "str": 10,
+      "mp": 100,
+      "sp_curr": 100
+    },
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "name": "ouhl",
+    "quests": {},
+    "race": "",
+    "inventory": {},
+    "tex": {},
+    "level": 1
+  },
+  "world": {
+    "talk_replacements": {},
+    "replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    }
+  }
+}

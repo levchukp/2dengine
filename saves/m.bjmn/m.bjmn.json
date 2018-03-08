@@ -1,0 +1,43 @@
+{
+  "char": {
+    "inventory": {},
+    "quests": {},
+    "name": "m.bjmn",
+    "race": "",
+    "level": 1,
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "abilities": {
+      "prot": 1,
+      "mp": 100,
+      "int": 10,
+      "str": 10,
+      "damage": 1,
+      "end": 10,
+      "sp": 100,
+      "mp_curr": 100,
+      "hp_curr": 100,
+      "agl": 10,
+      "sp_curr": 100,
+      "hp": 100
+    },
+    "tex": {}
+  },
+  "world": {
+    "talk_replacements": {},
+    "time": {
+      "clock": [
+        12,
+        0
+      ],
+      "date": [
+        1,
+        "5"
+      ]
+    },
+    "replacements": {}
+  }
+}

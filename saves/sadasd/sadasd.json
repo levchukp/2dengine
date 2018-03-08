@@ -1,0 +1,43 @@
+{
+  "char": {
+    "quests": {},
+    "level": 1,
+    "tex": {},
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "name": "sadasd",
+    "abilities": {
+      "hp": 100,
+      "end": 10,
+      "mp_curr": 100,
+      "prot": 1,
+      "agl": 10,
+      "sp": 100,
+      "int": 10,
+      "damage": 1,
+      "str": 10,
+      "mp": 100,
+      "sp_curr": 100,
+      "hp_curr": 100
+    },
+    "race": "",
+    "inventory": {}
+  },
+  "world": {
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "talk_replacements": {},
+    "replacements": {}
+  }
+}

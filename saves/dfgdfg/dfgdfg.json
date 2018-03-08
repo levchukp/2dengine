@@ -1,0 +1,43 @@
+{
+  "char": {
+    "level": 1,
+    "abilities": {
+      "damage": 1,
+      "sp_curr": 100,
+      "end": 10,
+      "int": 10,
+      "prot": 1,
+      "sp": 100,
+      "str": 10,
+      "mp_curr": 100,
+      "agl": 10,
+      "hp": 100,
+      "mp": 100,
+      "hp_curr": 100
+    },
+    "name": "dfgdfg",
+    "quests": {},
+    "inventory": {},
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "tex": {},
+    "race": ""
+  },
+  "world": {
+    "talk_replacements": {},
+    "replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    }
+  }
+}

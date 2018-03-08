@@ -1,0 +1,43 @@
+{
+  "world": {
+    "talk_replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {}
+  },
+  "char": {
+    "tex": {},
+    "quests": {},
+    "race": "",
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "name": "ertret",
+    "abilities": {
+      "hp_curr": 100,
+      "prot": 1,
+      "mp_curr": 100,
+      "damage": 1,
+      "hp": 100,
+      "end": 10,
+      "agl": 10,
+      "str": 10,
+      "sp": 100,
+      "sp_curr": 100,
+      "int": 10,
+      "mp": 100
+    },
+    "level": 1,
+    "inventory": {}
+  }
+}

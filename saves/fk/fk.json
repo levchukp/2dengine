@@ -1,0 +1,43 @@
+{
+  "world": {
+    "replacements": {},
+    "talk_replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    }
+  },
+  "char": {
+    "quests": {},
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "inventory": {},
+    "level": 1,
+    "name": "fk",
+    "race": "",
+    "tex": {},
+    "abilities": {
+      "damage": 1,
+      "mp_curr": 100,
+      "int": 10,
+      "sp": 100,
+      "agl": 10,
+      "end": 10,
+      "prot": 1,
+      "str": 10,
+      "mp": 100,
+      "hp_curr": 100,
+      "hp": 100,
+      "sp_curr": 100
+    }
+  }
+}

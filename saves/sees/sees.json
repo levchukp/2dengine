@@ -1,0 +1,43 @@
+{
+  "char": {
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "inventory": {},
+    "race": "",
+    "level": 1,
+    "quests": {},
+    "abilities": {
+      "end": 10,
+      "mp_curr": 100,
+      "mp": 100,
+      "sp_curr": 100,
+      "str": 10,
+      "sp": 100,
+      "hp": 100,
+      "damage": 1,
+      "int": 10,
+      "hp_curr": 100,
+      "prot": 1,
+      "agl": 10
+    },
+    "name": "sees",
+    "tex": {}
+  },
+  "world": {
+    "talk_replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {}
+  }
+}

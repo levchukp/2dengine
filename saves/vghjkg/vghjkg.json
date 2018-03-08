@@ -1,0 +1,43 @@
+{
+  "world": {
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {},
+    "talk_replacements": {}
+  },
+  "char": {
+    "tex": {},
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "race": "",
+    "level": 1,
+    "quests": {},
+    "name": "vghjkg",
+    "inventory": {},
+    "abilities": {
+      "end": 10,
+      "damage": 1,
+      "mp": 100,
+      "prot": 1,
+      "mp_curr": 100,
+      "str": 10,
+      "sp_curr": 100,
+      "sp": 100,
+      "agl": 10,
+      "hp": 100,
+      "hp_curr": 100,
+      "int": 10
+    }
+  }
+}

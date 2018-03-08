@@ -1,0 +1,43 @@
+{
+  "char": {
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "abilities": {
+      "damage": 1,
+      "sp": 100,
+      "sp_curr": 100,
+      "hp": 100,
+      "mp": 100,
+      "str": 10,
+      "int": 10,
+      "agl": 10,
+      "prot": 1,
+      "mp_curr": 100,
+      "hp_curr": 100,
+      "end": 10
+    },
+    "race": "",
+    "level": 1,
+    "tex": {},
+    "name": "1253",
+    "inventory": {},
+    "quests": {}
+  },
+  "world": {
+    "talk_replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {}
+  }
+}

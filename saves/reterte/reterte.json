@@ -1,0 +1,43 @@
+{
+  "char": {
+    "level": 1,
+    "inventory": {},
+    "name": "reterte",
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "abilities": {
+      "str": 10,
+      "mp": 100,
+      "hp": 100,
+      "agl": 10,
+      "damage": 1,
+      "prot": 1,
+      "mp_curr": 100,
+      "sp": 100,
+      "hp_curr": 100,
+      "int": 10,
+      "end": 10,
+      "sp_curr": 100
+    },
+    "race": "",
+    "quests": {},
+    "tex": {}
+  },
+  "world": {
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {},
+    "talk_replacements": {}
+  }
+}

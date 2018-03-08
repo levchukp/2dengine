@@ -1,0 +1,43 @@
+{
+  "world": {
+    "talk_replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {}
+  },
+  "char": {
+    "inventory": {},
+    "level": 1,
+    "tex": {},
+    "quests": {},
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "abilities": {
+      "hp": 100,
+      "end": 10,
+      "sp_curr": 100,
+      "damage": 1,
+      "int": 10,
+      "mp": 100,
+      "hp_curr": 100,
+      "sp": 100,
+      "mp_curr": 100,
+      "agl": 10,
+      "prot": 1,
+      "str": 10
+    },
+    "name": "sdfdsfdsf",
+    "race": ""
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "char": {
+    "level": 1,
+    "quests": {},
+    "tex": {},
+    "inventory": {},
+    "name": "sdfsf",
+    "abilities": {
+      "hp": 100,
+      "int": 10,
+      "prot": 1,
+      "damage": 1,
+      "end": 10,
+      "sp": 100,
+      "sp_curr": 100,
+      "str": 10,
+      "hp_curr": 100,
+      "agl": 10,
+      "mp": 100,
+      "mp_curr": 100
+    },
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "race": ""
+  },
+  "world": {
+    "talk_replacements": {},
+    "replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    }
+  }
+}

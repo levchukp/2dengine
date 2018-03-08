@@ -1,0 +1,43 @@
+{
+  "char": {
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ],
+    "abilities": {
+      "int": 10,
+      "prot": 1,
+      "hp": 100,
+      "damage": 1,
+      "agl": 10,
+      "mp": 100,
+      "hp_curr": 100,
+      "end": 10,
+      "str": 10,
+      "mp_curr": 100,
+      "sp": 100,
+      "sp_curr": 100
+    },
+    "quests": {},
+    "race": "",
+    "tex": {},
+    "inventory": {},
+    "level": 1,
+    "name": "vhj,"
+  },
+  "world": {
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    },
+    "replacements": {},
+    "talk_replacements": {}
+  }
+}

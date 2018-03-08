@@ -1,0 +1,43 @@
+{
+  "world": {
+    "talk_replacements": {},
+    "replacements": {},
+    "time": {
+      "date": [
+        1,
+        "5"
+      ],
+      "clock": [
+        12,
+        0
+      ]
+    }
+  },
+  "char": {
+    "tex": {},
+    "abilities": {
+      "mp": 100,
+      "mp_curr": 100,
+      "hp": 100,
+      "hp_curr": 100,
+      "prot": 1,
+      "str": 10,
+      "sp_curr": 100,
+      "sp": 100,
+      "end": 10,
+      "agl": 10,
+      "damage": 1,
+      "int": 10
+    },
+    "level": 1,
+    "race": "",
+    "inventory": {},
+    "quests": {},
+    "name": "fgd",
+    "place": [
+      0,
+      0,
+      "test_loc"
+    ]
+  }
+}
