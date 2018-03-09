@@ -36,74 +36,45 @@ class Game:
 
     def _square(self, loc, cx, cy):
         square = []
-        cent_x, cent_y = len(loc) // 2 + 1, len(loc[0]) // 2 + 1
+
         for i in range(len(loc)):
             loc[i] = loc[i].split(';')[:-1]
+        cent_x, cent_y = len(loc) // 2 + 1, len(loc[0]) // 2 + 1
         cx, cy = cent_x + cx, cent_y + cy
-            
+
         if len(loc) < 10:
             square = loc.copy()
         else:
-            start = cy-5 if cy-5 <= 0 else 0
+            start = cy-5 if cy-5 >= 0 else 0
             square += loc[start:cy+5]
              
         for i in range(len(square)):
-            start = cx-5 if cx-5 <= 0 else 0
+            start = cx-5 if cx-5 >= 0 else 0
             square[i] = square[i][start:cx+5]
         for i in range(10 - len(square)):
-            square.append([None for j in range(10)]) 
+            if cy-5 < 0:
+                square.insert(0, [None for j in range(10)])
+            else:
+                square.append([None for j in range(10)])
         for i in range(len(square)):
             if len(square[i]) < 10:
-                for j in range(10 - len(square[i])):
-                    square[i].append(None)
- 
+                if cx - 5 < 0:
+                    for j in range(10 - len(square[i])):
+                        square[i].insert(0, None)
+                else:
+                    for j in range(10 - len(square[i])):
+                        square[i].append(None)
+        print(len(square), len(square[0]))
         return square
     
     def load(self):
         location = open(self.location, 'r').readlines()
         current_world = self._square(location, self.x, self.y)
-        print(current_world)
         cent_x, cent_y = len(location) // 2 + 1, len(location[0]) // 2 + 1
         cx, cy = cent_x + self.x, cent_y + self.y
-                
         for i in range(10):
             for j in range(10):
                 self.current_world[i][j].reimage(current_world[i][j], self.tiles)
-        
-    
-##    def update(self):
-##        curr_x, curr_y = self.sprites[self.hero].x, self.sprites[self.hero].y
-##
-##        if curr_x != self.x:
-##            if curr_x > self.x:
-##                diff = curr_x - self.x
-##                for i in range(10):
-##                    self.current_world[i] = self.current_world[i][diff:]
-##                    for j in range(diff):
-##                        self.current_world[i].insert(-1, None)
-##            else:
-##                diff = self.x - curr_x
-##                for i in range(10):
-##                    self.current_world[i] = self.current_world[i][:10-diff]
-##                    for j in range(diff):
-##                        self.current_world[i].insert(0, None)
-##            self.x = curr_x
-##        if self.sprites[self.hero].y != self.y:
-##            if curr_y > self.y:
-##                diff = curr_y - self.y
-##                for i in range(10):
-##                    self.current_world = self.current_world[:10-diff]
-##                    for j in range(diff):
-##                        self.current_world.insert(-1, [None for j in range(10)])
-##            else:
-##                diff = self.y - curr_y
-##                for i in range(10):
-##                    self.current_world = self.current_world[diff:]
-##                    for j in range(diff):
-##                        self.current_world.insert(0, [None for j in range(10)])
-##            self.y = curr_y
-##        
-##        self.load(current)
 
 
     def update(self):
@@ -134,11 +105,11 @@ class Hero(Creature): ##TODO
 
     def move(self, event):
         if event.key == pygame.K_w:
-            self.y += 1
+            self.y -= 1
         elif event.key == pygame.K_a:
             self.x -= 1
         elif event.key == pygame.K_s:
-            self.y -= 1
+            self.y += 1
         elif event.key == pygame.K_d:
             self.x += 1
 
@@ -182,7 +153,10 @@ class Surface_Tile(pygame.sprite.Sprite): ##TODO
 
     def reimage(self, kind, tiles):
         self.image = pygame.image.load(os.path.join('tex', tiles[kind]))
-        self.through = False if kind[0] = '0' else False
+        x, y = self.rect.x, self.rect.y
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
+        self.through = False if kind is None or kind[0] == '0' else False
 
 class House(pygame.sprite.Sprite):
     pass
