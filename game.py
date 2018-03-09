@@ -16,11 +16,11 @@ class Game:
         self.char = pygame.sprite.Group()
         self.tiles = {'000': 'wall.png', '10': 'grass.png',
                       None: 'none.png', '010': 'wall.png',
-                      '50': 'sack.png', '600': 'sack.png',
-                      '700': 'sack.png', '50': 'sack.png',
-                      '90': 'sack.png', '3': 'sack.png',
-                      '4': 'sack.png', '20': 'sack.png',
-                      '020': 'wall.png', 'A0': 'wall.png'}
+                      '50': 'no_tex.png', '600': 'no_tex.png',
+                      '700': 'no_tex.png', '50': 'no_tex.png',
+                      '90': 'no_tex.png', '3': 'snow.png',
+                      '4': 'ice.png', '20': 'water.png',
+                      '020': 'wall.png', 'A0': 'door.png'}
         self.curr_tiles = pygame.sprite.Group()
         self.current_world = [[Surface_Tile(j*80, i*80, self.curr_tiles) for j in range(10)] for i in range(10)]
         self.location = None
@@ -64,7 +64,7 @@ class Game:
                 else:
                     for j in range(10 - len(square[i])):
                         square[i].append(None)
-        print(len(square), len(square[0]))
+
         return square
     
     def load(self):
@@ -72,6 +72,7 @@ class Game:
         current_world = self._square(location, self.x, self.y)
         cent_x, cent_y = len(location) // 2 + 1, len(location[0]) // 2 + 1
         cx, cy = cent_x + self.x, cent_y + self.y
+        
         for i in range(10):
             for j in range(10):
                 self.current_world[i][j].reimage(current_world[i][j], self.tiles)
@@ -104,14 +105,19 @@ class Hero(Creature): ##TODO
         self.file = '\n'.join(file.readlines())
 
     def move(self, event):
+        global playing
         if event.key == pygame.K_w:
-            self.y -= 1
+            if playing.current_world[3][4].through:
+                self.y -= 1
         elif event.key == pygame.K_a:
-            self.x -= 1
+            if playing.current_world[4][3].through:
+                self.x -= 1
         elif event.key == pygame.K_s:
-            self.y += 1
+            if playing.current_world[5][4].through:
+                self.y += 1
         elif event.key == pygame.K_d:
-            self.x += 1
+            if playing.current_world[4][5].through:
+                self.x += 1
 
 
 class NPC(Creature):
@@ -142,7 +148,7 @@ class Book(pygame.sprite.Sprite):
     pass
         
 
-class Surface_Tile(pygame.sprite.Sprite): ##TODO
+class Surface_Tile(pygame.sprite.Sprite):
     def __init__(self, x, y, group):
         super().__init__(group)
         global playing
@@ -156,7 +162,7 @@ class Surface_Tile(pygame.sprite.Sprite): ##TODO
         x, y = self.rect.x, self.rect.y
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
-        self.through = False if kind is None or kind[0] == '0' else False
+        self.through = False if kind is None or kind[0] in ['0', '2'] else True
 
 class House(pygame.sprite.Sprite):
     pass
@@ -250,7 +256,7 @@ def new_game(par): ##TODO
         f.write(json.dumps(change, f, indent=2))
         
     game = True
-    playing.add_sprite(Hero('main_hero', nickname, 100, 100, 100, 1, 1, ['cloth', 'boots'], ['wall.png'], 0, 0, playing.char, open('saves/'+nickname+'/'+nickname+'.json', 'r+')))
+    playing.add_sprite(Hero('main_hero', nickname, 100, 100, 100, 1, 1, ['cloth', 'boots'], ['hero.png'], 0, 0, playing.char, open('saves/'+nickname+'/'+nickname+'.json', 'r+')))
 
            
 def process(screen):
