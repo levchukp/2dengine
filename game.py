@@ -8,6 +8,9 @@ from g import *
 pygame.init()
 size = width, height = 800, 800
 screen = pygame.display.set_mode(size)
+pygame.mixer.init()
+fone_song = pygame.mixer.Sound(os.path.join('sound', 'monplaisir.ogg'))
+fone_song.play()
 
 
 class Game:
